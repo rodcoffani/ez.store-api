@@ -47,7 +47,7 @@ class Postgres extends ICrud {
 
     static async connect(){
         const connection = new Sequelize(
-            'heroes',
+            'ez_coins_api_dev',
             'postgres',
             'postgres',
             {
