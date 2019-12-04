@@ -13,7 +13,7 @@ class Postgres extends ICrud {
             await this._connection.authenticate();
             return true;
         } catch (error) {
-            console.log('Erro!!!', error);
+            console.log('Erro na autenticação!!!', error);
             return false;
         }
     }
@@ -46,19 +46,24 @@ class Postgres extends ICrud {
     }
 
     static async connect(){
-        const connection = new Sequelize(
-            'ez_coins_api_dev',
-            'postgres',
-            'postgres',
-            {
-                host: 'localhost',
-                dialect: 'postgres',
-                quoteIdentifiers: false,
-                operatorAliases: false,
-                logging: false
-            }
-        )
-        return connection;
+        try {
+            const connection = new Sequelize(
+                'ez_coins_api_dev',
+                'postgres',
+                'postgres',
+                {
+                    host: 'localhost',
+                    dialect: 'postgres',
+                    quoteIdentifiers: false,
+                    operatorAliases: false,
+                    logging: false
+                }
+            )
+            console.log('Database postgres tá rodando!');
+            return connection;
+        } catch (error) {
+            console.log('Erro na conexão!', error);
+        } 
     }
 }
 

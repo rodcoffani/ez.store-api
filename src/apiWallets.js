@@ -2,11 +2,11 @@ const Hapi = require('hapi');
 const Context = require('./db/strategies/base/contextStrategy');
 const Postgres = require('./db/strategies/postgres/postgres');
 const WalletSchema = require('./db/strategies/postgres/schemas/WalletSchema');
-const WalletRoute = require('./routes/walletRoutes')
+const WalletRoutes = require('./routes/walletRoutes');
 
 
 const app = new Hapi.Server({
-    port:5000
+    port:1111
 });
 
 function mapRoutes(instance, methods) {
@@ -14,15 +14,16 @@ function mapRoutes(instance, methods) {
 }
 
 async function main(){
-    const connection = Postgres.connect();
-    const contextWallet = new Context(new Postgres(connection, WalletSchema));
+    const connection = await Postgres.connect();
+    const walletModel = await Postgres.defineModel(connection, WalletSchema);
+    const contextWallet = new Context(new Postgres(connection, walletModel));
 
     app.route([
-        ...mapRoutes(new WalletRoute(contextWallet), UserRoute.methods())
+        ...mapRoutes(new WalletRoutes(contextWallet), WalletRoutes.methods())
     ]);
 
     await app.start();
-    console.log('Servidor rodando na porta ', app.info.port);
+    console.log('Servidor (Wallets) rodando na porta ', app.info.port);
     
     return app;
 }

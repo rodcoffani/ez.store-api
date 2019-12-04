@@ -2,14 +2,14 @@ sudo docker run \
     --name postgres \
     -e POSTGRES_USER=postgres \
     -e POSTGRES_PASSWORD=postgres \
-    -e POSTGRES_DB=ez_coins_dev \
+    -e POSTGRES_DB=ez_coins_api_dev \
     -p 5432:5432 \
     -d \
     postgres
 
 sudo docker ps
 sudo docker exec -it postgres /bin/bash
-psql
+psql -u postgres -d ez_coins_api_dev
 
 sudo docker run \
     --name adminer \

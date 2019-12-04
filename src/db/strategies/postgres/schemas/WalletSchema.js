@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+
 const WalletSchema = {
     name: 'wallets',
     schema: {
@@ -36,9 +37,9 @@ const WalletSchema = {
         }
     },
     options: {
-        tableName: 'tb_wallets',
+        tableName: 'wallets',
         freezeTableName: false,
-        timestamps: true
+        timestamps: false
     }
 }
 
