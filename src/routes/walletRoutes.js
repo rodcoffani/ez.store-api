@@ -28,7 +28,7 @@ class WalletRoutes extends BaseRoute {
                         id
                     } = request.params;
 
-                    const result = await this.db.read({id: id});
+                    const result = await this.db.read({id});
                     if (result.length === 0) {
                         return Boom.preconditionFailed('ID não encontrado no banco')
                     }
@@ -37,9 +37,33 @@ class WalletRoutes extends BaseRoute {
                     return Boom.internal('Erro na requisição da carteira!');
                 }
             }
-
         }
     };
+
+    wallets() {
+        return {
+            path: '/wallets',
+            method: 'GET',
+            config: {
+                validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    }
+                },
+            },
+            handler: async (request) => {
+                try {
+                    const result = await this.db.read();
+                    if (result.length === 0) {
+                        return Boom.badRequest('Não existem carteiras cadastradas');
+                    }
+                    return result;
+                } catch (error) {
+                    return Boom.internal('Erro na requisição da carteira!');
+                }
+            }
+        }
+    }
 }
 
 module.exports = WalletRoutes;
