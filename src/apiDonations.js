@@ -6,7 +6,7 @@ const DonationRoute = require('./routes/donationRoutes')
 
 
 const app = new Hapi.Server({
-    port:5000
+    port:3333
 });
 
 function mapRoutes(instance, methods) {
@@ -22,7 +22,7 @@ async function main(){
     ]);
 
     await app.start();
-    console.log('Servidor rodando na porta ', app.info.port);
+    console.log('Servidor (Donations) rodando na porta ', app.info.port);
     
     return app;
 }

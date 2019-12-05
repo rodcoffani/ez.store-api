@@ -6,7 +6,7 @@ const UserRoute = require('./routes/userRoutes')
 
 
 const app = new Hapi.Server({
-    port:5000
+    port:2222
 });
 
 function mapRoutes(instance, methods) {
@@ -22,7 +22,7 @@ async function main(){
     ]);
 
     await app.start();
-    console.log('Servidor rodando na porta ', app.info.port);
+    console.log('Servidor (Users) rodando na porta ', app.info.port);
     
     return app;
 }

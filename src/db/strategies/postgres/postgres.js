@@ -1,5 +1,6 @@
 const ICrud = require('../interfaces/interfaceCrud');
 const Sequelize = require('sequelize');
+const Boom = require('boom');
 
 class Postgres extends ICrud {
     constructor(connection, schema){
@@ -13,7 +14,7 @@ class Postgres extends ICrud {
             await this._connection.authenticate();
             return true;
         } catch (error) {
-            console.log('Erro!!!', error);
+            Boom.unauthorized('Erro na autenticação do banco!');
             return false;
         }
     }
@@ -27,7 +28,6 @@ class Postgres extends ICrud {
     }
 
     async create(item){
-        // return this._schema.create(item, {raw: true});
         const { dataValues } = await this._schema.create(item, {raw: true});
         return dataValues;
     }
@@ -46,19 +46,23 @@ class Postgres extends ICrud {
     }
 
     static async connect(){
-        const connection = new Sequelize(
-            'ez_coins_api_dev',
-            'postgres',
-            'postgres',
-            {
-                host: 'localhost',
-                dialect: 'postgres',
-                quoteIdentifiers: false,
-                operatorAliases: false,
-                logging: false
-            }
-        )
-        return connection;
+        try {
+            const connection = new Sequelize(
+                'ez_coins_api_dev',
+                'postgres',
+                'postgres',
+                {
+                    host: 'localhost',
+                    dialect: 'postgres',
+                    quoteIdentifiers: false,
+                    operatorAliases: false,
+                    logging: false
+                }
+            )
+            return connection;
+        } catch (error) {
+            return Boom.internal('Erro na conexão do banco!')
+        } 
     }
 }
 
