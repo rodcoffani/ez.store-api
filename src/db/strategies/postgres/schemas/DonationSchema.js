@@ -40,9 +40,9 @@ const DonationSchema = {
         }
     },
     options: {
-        tableName: 'tb_donations',
+        tableName: 'donations',
         freezeTableName: false,
-        timestamps: true
+        timestamps: false
     }
 }
 
