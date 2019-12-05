@@ -34,10 +34,35 @@ class WalletRoutes extends BaseRoute {
                     }
                     return result;
                 } catch (error) {
-                    return Boom.internal('Erro na requisição do usuario!');
+                    return Boom.internal('Erro na requisição da doação!');
                 }
             }
 
+        }
+    };
+
+    donations() {
+        return {
+            path: '/donations',
+            method: 'GET',
+            config: {
+                validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    }
+                },
+            },
+            handler: async (request) => {
+                try {
+                    const result = await this.db.read();
+                    if (result.length === 0) {
+                        return Boom.badRequest('Não existem doações cadastradas');
+                    }
+                    return result;
+                } catch (error) {
+                    return Boom.internal('Erro na requisição da doação!');
+                }
+            }
         }
     };
 }
