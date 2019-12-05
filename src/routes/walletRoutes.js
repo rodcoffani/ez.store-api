@@ -55,7 +55,7 @@ class WalletRoutes extends BaseRoute {
                 try {
                     const result = await this.db.read();
                     if (result.length === 0) {
-                        return Boom.badRequest('Não existem carteiras cadastradas');
+                        return Boom.notFound('Não existem carteiras cadastradas');
                     }
                     return result;
                 } catch (error) {
