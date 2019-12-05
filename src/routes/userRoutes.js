@@ -40,6 +40,31 @@ class WalletRoutes extends BaseRoute {
 
         }
     };
+
+    users() {
+        return {
+            path: '/users',
+            method: 'GET',
+            config: {
+                validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    }
+                },
+            },
+            handler: async (request) => {
+                try {
+                    const result = await this.db.read();
+                    if (result.length === 0) {
+                        return Boom.badRequest('Não existem usuários cadastrados');
+                    }
+                    return result;
+                } catch (error) {
+                    return Boom.internal('Erro na requisição da usuário!');
+                }
+            }
+        }
+    };
 }
 
 module.exports = WalletRoutes;
