@@ -36,9 +36,9 @@ const UserSchema = {
         }
     },
     options: {
-        tableName: 'tb_users',
+        tableName: 'users',
         freezeTableName: false,
-        timestamps: true
+        timestamps: false
     }
 }
 

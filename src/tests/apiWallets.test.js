@@ -1,5 +1,5 @@
 const assert = require('assert');
-const api = require('./../apiWallets');
+const api = require('./../api');
 let app = {}
 
 describe('Testes da API - Wallets', function () {
