@@ -29,23 +29,17 @@ class WalletRoutes extends BaseRoute {
                     } = request.params;
 
                     const result = await this.db.read({id: id});
-
-                    if (result.n <= 0) {
+                    if (result.length === 0) {
                         return Boom.preconditionFailed('ID não encontrado no banco')
                     }
                     return result;
                 } catch (error) {
-                    console.error('Erro na requisição da carteira!', error);
-                    return Boom.internal();
+                    return Boom.internal('Erro na requisição da carteira!');
                 }
             }
 
         }
     };
-
-    // purchase() {
-
-    // }
 }
 
 module.exports = WalletRoutes;

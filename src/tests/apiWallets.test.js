@@ -15,8 +15,6 @@ describe('Testes da API - Wallets', function () {
             url: `/wallet/${id}`,
         });
 
-        // console.log('Result', result);
-        
         const dados = JSON.parse(result.payload);
         const statusCode = result.statusCode;
 
