@@ -2,7 +2,7 @@ const assert = require('assert');
 const api = require('./../api');
 let app = {}
 
-describe('Testes da API - Wallets', function () {
+describe.only('Testes da API - Wallets', function () {
     this.beforeAll(async () => {
         app = await api;
     });
@@ -32,5 +32,24 @@ describe('Testes da API - Wallets', function () {
 
         assert.deepEqual(statusCode, 200);
         assert.ok(dados.length >= 1);        
-    })
+    });
+
+    it('Realizar uma compra', async () => {
+        const id = '19';
+        const expected = {
+            item: '3'
+        }
+
+        const result = await app.inject({
+            method: 'PATCH',
+            url: `/purchase/${id}`,
+            payload: JSON.stringify(expected),
+        });
+
+        const dados = JSON.parse(result.payload);
+        const statusCode = result.statusCode;
+
+        assert.deepEqual(dados.message, 'Compra realizada com sucesso!');
+        assert.deepEqual(statusCode, 200);
+    });
 });

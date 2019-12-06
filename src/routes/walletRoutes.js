@@ -63,7 +63,60 @@ class WalletRoutes extends BaseRoute {
                 }
             }
         }
-    }
+    };
+
+    purchase() {
+        return{ 
+            method: 'PATCH',
+            path: '/purchase/{id}',
+            config: {
+                validate: {
+                    params: {
+                        id: Joi.number().required()
+                    },
+                    payload: {
+                        item: Joi.number().required()
+                    }
+                },
+
+                handler: async ({payload, params:{id}}) => {
+                    try {                        
+                        const dadosString = JSON.stringify(payload);
+                        const dados = JSON.parse(dadosString);
+                        
+                        const pesquisa = await this.db.read({id});
+                        if(pesquisa.length === 0){
+                            return Boom.preconditionFailed('ID não existente no banco!')
+                        }
+                        
+                        const [{balance}] = pesquisa;
+
+                        
+                        const valor = dados.item * 10;
+                        
+                        if(balance <= valor){
+                            return Boom.preconditionFailed('Não há saldo suficiente para a compra...');
+                        }
+                        else{
+                            const novoSaldo = {balance: (balance - valor)};
+                            const result = await this.db.update(id, novoSaldo);
+                            if (result.nModified <= 1) {
+                                return Boom.preconditionFailed('Não foi possivel realizar a compra');
+                            }
+                            else {
+                                return {
+                                    message: 'Compra realizada com sucesso!',
+                                    saldo: novoSaldo,
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        return Boom.internal('Erro interno durante a compra!');
+                    }
+                }
+            }
+        }
+    };
 }
 
 module.exports = WalletRoutes;
