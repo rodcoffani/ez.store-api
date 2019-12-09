@@ -2,6 +2,10 @@ const BaseRoute = require('./base/baseRoute');
 const Joi = require('joi');
 const Boom = require('boom');
 
+const headers = Joi.object({
+    authorization: Joi.string().required()
+}).unknown();
+
 class WalletRoutes extends BaseRoute {
     constructor(database) {
         super();
@@ -14,6 +18,7 @@ class WalletRoutes extends BaseRoute {
             method: 'GET',
             config: {
                 validate: {
+                    headers,
                     params: {
                         id: Joi.number().required()
                     },
@@ -46,6 +51,7 @@ class WalletRoutes extends BaseRoute {
             method: 'GET',
             config: {
                 validate: {
+                    headers,
                     failAction: (request, headers, erro) => {
                         throw erro;
                     }
@@ -71,11 +77,15 @@ class WalletRoutes extends BaseRoute {
             path: '/purchase/{id}',
             config: {
                 validate: {
+                    headers,
                     params: {
                         id: Joi.number().required()
                     },
                     payload: {
                         item: Joi.number().required()
+                    },
+                    failAction: (request, headers, erro) => {
+                        throw erro;
                     }
                 },
 

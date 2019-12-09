@@ -20,6 +20,7 @@ class LoginRoutes extends BaseRoute {
             path: '/login',
             method: 'POST',
             config: {
+                auth: false,
                 description: 'Obter o token para o usuário que logar',
                 validate: {
                     payload: {

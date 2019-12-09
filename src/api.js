@@ -1,4 +1,5 @@
 const Hapi = require('hapi');
+const HapiJWT = require('hapi-auth-jwt2');
 
 const Context = require('./db/strategies/base/contextStrategy');
 const Postgres = require('./db/strategies/postgres/postgres');
@@ -31,6 +32,21 @@ async function main(){
 
     const donationModel = await Postgres.defineModel(connection, DonationSchema);
     const contextDonation = new Context(new Postgres(connection, donationModel));
+
+    await app.register([
+        HapiJWT,
+    ]);
+
+    app.auth.strategy('jwt', 'jwt', {
+        key: JWT_SECRET,
+        validate: (dado, request) => {
+            return{
+                isValid: true
+            }
+        }
+    })
+    app.auth.default('jwt');
+
 
     app.route([
         ...mapRoutes(new WalletRoutes(contextWallet), WalletRoutes.methods()),

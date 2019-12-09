@@ -2,6 +2,10 @@ const BaseRoute = require('./base/baseRoute');
 const Joi = require('joi');
 const Boom = require('boom');
 
+const headers = Joi.object({
+    authorization: Joi.string().required()
+}).unknown();
+
 class WalletRoutes extends BaseRoute {
     constructor(database) {
         super();
