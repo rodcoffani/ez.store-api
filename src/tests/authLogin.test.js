@@ -1,10 +1,6 @@
 const assert = require('assert');
 const api = require('./../api');
 
-const Context = require('./../db/strategies/base/contextStrategy');
-const Postgres = require('./../db/strategies/postgres/postgres'); 
-const AltUserSchema = require('./../db/strategies/postgres/schemas/altUserSchema')
-
 let app = {}
 
 describe('Testes de Autenticação - Login', function () {
@@ -18,7 +14,7 @@ describe('Testes de Autenticação - Login', function () {
             url: '/login',
             payload: {
                 email: 'rodrigo.coffani@gmail.com',
-                password: 'senha@123456'
+                password: '123456'
             },
         });
 

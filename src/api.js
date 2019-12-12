@@ -35,9 +35,6 @@ async function main(){
     const donationModel = await Postgres.defineModel(connection, DonationSchema);
     const contextDonation = new Context(new Postgres(connection, donationModel));
 
-    const altUserModel = await Postgres.defineModel(connection, AltUserSchema);
-    const contextAltUser = new Context(new Postgres(connection, altUserModel));
-
     await app.register([
         HapiJWT,
     ]);
@@ -57,7 +54,7 @@ async function main(){
         ...mapRoutes(new WalletRoutes(contextWallet), WalletRoutes.methods()),
         ...mapRoutes(new UserRoutes(contextUser), UserRoutes.methods()),
         ...mapRoutes(new DonationRoutes(contextDonation), DonationRoutes.methods()),
-        ...mapRoutes(new LoginRoutes(JWT_SECRET, contextAltUser), LoginRoutes.methods()),
+        ...mapRoutes(new LoginRoutes(JWT_SECRET, contextUser), LoginRoutes.methods()),
     ]);
 
     await app.start();

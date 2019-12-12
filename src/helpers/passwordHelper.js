@@ -1,8 +1,7 @@
-const Bcrypt = require('bcrypt');
-const { promisify } = require('util');
+const Argon2 = require('argon2');
 
-const hashAsync = promisify(Bcrypt.hash);
-const compareAsync = promisify(Bcrypt.compare);
+const hashAsync = Argon2.hash;
+const compareAsync = Argon2.verify;
 
 const SALT = 8;
 
@@ -11,7 +10,7 @@ class PasswordHelper {
         return hashAsync(pass, SALT)
     }
     static comparePassword (pass, hash) {
-        return compareAsync(pass, hash);
+        return compareAsync(hash, pass);
     }
 }
 

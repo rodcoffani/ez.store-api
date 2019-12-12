@@ -7,7 +7,7 @@ const PasswordHelper = require('./../helpers/passwordHelper');
 
 const TestUser = {
     email: 'teste@ezdevs',
-    senha: 'senha@123456'
+    senha: '123456'
 }
 
 class LoginRoutes extends BaseRoute {
@@ -46,7 +46,8 @@ class LoginRoutes extends BaseRoute {
                 if(!usuario){
                     return Boom.unauthorized('O email informado não existe!')
                 }
-                const match = await PasswordHelper.comparePassword(password, usuario.password_hash);
+                const match = await PasswordHelper.comparePassword(password, usuario.password_hash);                
+                
                 if(!match){
                     return Boom.unauthorized('Email ou senha inválidos!')
                 }
