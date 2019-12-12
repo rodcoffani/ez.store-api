@@ -2,9 +2,9 @@ const assert = require('assert');
 
 const PasswordHelper = require('./../helpers/passwordHelper');
 
-const SENHA = "teste@123456"
+const SENHA = "senha@123456"
 
-describe.only('UserHelper testes', function () {
+describe('Testes de senha - UserHelper', function () {
     it('Gerar um hash a partir de uma senha', async () => {
         const result = await PasswordHelper.hashPassword(SENHA);
         assert.ok(result.length >= 50);

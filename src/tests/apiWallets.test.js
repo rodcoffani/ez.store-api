@@ -45,7 +45,7 @@ describe('Testes da API - Wallets', function () {
     it('Realizar uma compra', async () => {
         const id = '19';
         const expected = {
-            item: '3'
+            item: '1'
         }
 
         const result = await app.inject({

@@ -11,6 +11,8 @@ const DonationSchema = require('./db/strategies/postgres/schemas/DonationSchema'
 const DonationRoutes = require('./routes/donationRoutes');
 const LoginRoutes = require('./routes/loginRoutes');
 
+const AltUserSchema = require('./db/strategies/postgres/schemas/altUserSchema');
+
 const JWT_SECRET = 'ch4v3_s3cr3t4'
 
 const app = new Hapi.Server({
@@ -33,6 +35,9 @@ async function main(){
     const donationModel = await Postgres.defineModel(connection, DonationSchema);
     const contextDonation = new Context(new Postgres(connection, donationModel));
 
+    const altUserModel = await Postgres.defineModel(connection, AltUserSchema);
+    const contextAltUser = new Context(new Postgres(connection, altUserModel));
+
     await app.register([
         HapiJWT,
     ]);
@@ -52,7 +57,7 @@ async function main(){
         ...mapRoutes(new WalletRoutes(contextWallet), WalletRoutes.methods()),
         ...mapRoutes(new UserRoutes(contextUser), UserRoutes.methods()),
         ...mapRoutes(new DonationRoutes(contextDonation), DonationRoutes.methods()),
-        ...mapRoutes(new LoginRoutes(JWT_SECRET), LoginRoutes.methods()),
+        ...mapRoutes(new LoginRoutes(JWT_SECRET, contextAltUser), LoginRoutes.methods()),
     ]);
 
     await app.start();

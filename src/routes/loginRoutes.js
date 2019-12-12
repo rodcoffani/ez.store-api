@@ -3,16 +3,18 @@ const Boom = require('boom');
 const Jwt = require('jsonwebtoken');
 
 const BaseRoute = require('./base/baseRoute');
+const PasswordHelper = require('./../helpers/passwordHelper');
 
 const TestUser = {
-    username: 'teste@ezdevs',
-    senha: 'senha@123'
+    email: 'teste@ezdevs',
+    senha: 'senha@123456'
 }
 
 class LoginRoutes extends BaseRoute {
-    constructor(secret) {
+    constructor(secret, db) {
         super();
         this.secret = secret;
+        this.db = db;
     }
 
     login() {
@@ -24,7 +26,7 @@ class LoginRoutes extends BaseRoute {
                 description: 'Obter o token para o usuário que logar',
                 validate: {
                     payload: {
-                        username: Joi.string().min(3).required(),
+                        email: Joi.string().min(3).required(),
                         password: Joi.string().min(6).required()
                     },
                     failAction: (request, headers, erro) => {
@@ -34,21 +36,29 @@ class LoginRoutes extends BaseRoute {
             },
             handler: async (request) => {
                 const {
-                    username,
+                    email,
                     password
                 } = request.payload;
 
-                if (username.toLowerCase() !== TestUser.username.toLowerCase() || password !== TestUser.senha) {
-                    return Boom.unauthorized('Os dados informados não são compatíveis com os nossos');
+                const [usuario] = await this.db.read({
+                    email: email.toLowerCase()
+                })                
+                if(!usuario){
+                    return Boom.unauthorized('O email informado não existe!')
+                }
+                const match = await PasswordHelper.comparePassword(password, usuario.password_hash);
+                if(!match){
+                    return Boom.unauthorized('Email ou senha inválidos!')
                 }
 
                 const token = Jwt.sign({
-                    username,
-                    id: 99
+                    email,
+                    id: usuario.id,
                 }, this.secret);
 
                 return {
-                    token
+                    token,
+                    message: 'Logado com sucesso!'
                 };
             }
         }
