@@ -2,6 +2,12 @@ const assert = require('assert');
 const api = require('./../api');
 let app = {}
 
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1RFQGV6ZGV2cyIsImlkIjo5OSwiaWF0IjoxNTc1OTI1ODA2fQ.zWmyO9LWBu54C_dOAXCPL4iD3iHbxYPWLIt8E4XNjrk'
+
+const headers = {
+    Authorization: TOKEN,
+}
+
 describe('Testes da API - Wallets', function () {
     this.beforeAll(async () => {
         app = await api;
@@ -12,6 +18,7 @@ describe('Testes da API - Wallets', function () {
 
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/wallet/${id}`,
         });
         const dados = JSON.parse(result.payload);
@@ -24,6 +31,7 @@ describe('Testes da API - Wallets', function () {
     it('Listar todas as carteiras', async () => {
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: '/wallets',
         });
 
@@ -37,11 +45,12 @@ describe('Testes da API - Wallets', function () {
     it('Realizar uma compra', async () => {
         const id = '19';
         const expected = {
-            item: '3'
+            item: '1'
         }
 
         const result = await app.inject({
             method: 'PATCH',
+            headers,
             url: `/purchase/${id}`,
             payload: JSON.stringify(expected),
         });

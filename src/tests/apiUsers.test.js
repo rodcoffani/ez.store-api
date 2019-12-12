@@ -2,6 +2,12 @@ const assert = require('assert');
 const api = require('./../api');
 let app = {}
 
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1RFQGV6ZGV2cyIsImlkIjo5OSwiaWF0IjoxNTc1OTI1ODA2fQ.zWmyO9LWBu54C_dOAXCPL4iD3iHbxYPWLIt8E4XNjrk'
+
+const headers = {
+    Authorization: TOKEN,
+}
+
 describe('Testes da API - Users', function () {
     this.beforeAll(async () => {
         app = await api;
@@ -12,6 +18,7 @@ describe('Testes da API - Users', function () {
 
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/user/${id}`,
         });
         const dados = JSON.parse(result.payload);
@@ -24,6 +31,7 @@ describe('Testes da API - Users', function () {
     it('Listar todos os usuários', async () => {
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: '/users',
         });
 
