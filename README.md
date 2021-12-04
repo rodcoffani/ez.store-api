@@ -10,7 +10,7 @@ Antes de iniciar:
   - Rodar o script ('./scripts/postgres.sql') para criar o database;
 
 Para iniciar o projeto e rodar todos os testes:
-  - npm t
+  - `npm t`
 
 Para iniciar o projeto SEM os testes:
-  - node ./src/api.js
+  - `node ./src/api.js`
