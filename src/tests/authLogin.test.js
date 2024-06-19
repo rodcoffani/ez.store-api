@@ -1,5 +1,6 @@
 const assert = require('assert');
 const api = require('./../api');
+
 let app = {}
 
 describe('Testes de Autenticação - Login', function () {
@@ -12,14 +13,15 @@ describe('Testes de Autenticação - Login', function () {
             method: 'POST',
             url: '/login',
             payload: {
-                username: 'TESTE@ezdevs',
-                password: 'senha@123'
+                email: 'rodrigo.coffani@gmail.com',
+                password: '123456'
             },
         });
 
         const dados = JSON.parse(result.payload);
         const statusCode = result.statusCode;
 
+        assert.deepEqual(dados.message, 'Logado com sucesso!');
         assert.deepEqual(statusCode, 200);
         assert.ok(dados.token.length >= 100);
     });
